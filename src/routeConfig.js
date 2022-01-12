@@ -45,9 +45,7 @@ const NavBar = () =>{
     const navigate = useNavigate()
 
     return       <div
-        style={{
-            marginRight : "auto",
-            marginLeft : "auto"
+        style={{display:'flex', justifyContent:'center', alignItems:'center'
         }}
     >
     { location.pathname === '/' ? <Button
