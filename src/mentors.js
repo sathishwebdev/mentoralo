@@ -76,7 +76,7 @@ function MentorSlide() {
                             }}
 
                            onClick={()=>{
-                               navigate(`mentors/${mentor.mentorName}`)
+                               navigate(`../mentors/${mentor.mentorName}`)
                            }}
                         >
                             View
@@ -109,11 +109,12 @@ const MentorProfile = () =>{
     return <div className='App'>
         {
             !mentor? <h1>loading...</h1> : <div >
-                <h1 style={{ textTransform:"uppercase" }} >{mentor.name}</h1>
+                <h1>MENTOR PROFILE</h1>
                 <div className='profile' >
                     <Icons.Person sx={{fontSize:"180px"}} />
                 </div>
                 <br/>
+                <h1 style={{ textTransform:"uppercase" }} >{mentor.name}</h1>
                 <div>
                     <p>@{mentor.mentorName}</p>
                     <p>Total No. Students : {mentor.numOfStudents}</p>
@@ -132,11 +133,11 @@ const MentorProfile = () =>{
                             {mentor.students.map((student, si) =>(<tr key={si} >
                                 <td>{si+1}</td>
                                 <td>{student.name}</td>
-                                <td><Link className='link' to={`students/${student.studentName}`} >@{student.studentName}</Link></td>
+                                <td><Link className='link' to={`../students/${student.studentName}`} >@{student.studentName}</Link></td>
                                 <td>{student.studentId}</td>
                                 <td> <Button
                                     onClick={()=>{
-                                        navigate(`students/${student.studentName}`)
+                                        navigate(`../students/${student.studentName}`)
                                     }}
                                 >
                                     View

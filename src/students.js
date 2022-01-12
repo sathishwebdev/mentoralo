@@ -76,7 +76,7 @@ function StudentSlide() {
                             }}
 
                             onClick={()=>{
-                                navigate(`students/${student.studentName}`)
+                                navigate(`/students/${student.studentName}`)
                             }}
                             
                         >
@@ -123,11 +123,11 @@ const UnassignedStudents = () =>{
                 {freeStudents.map((student, si) =>(<tr key={si} >
                     <td>{si+1}</td>
                     <td>{student.name}</td>
-                    <td><Link className='link' to={`../students/${student.studentName}`} >@{student.studentName}</Link></td>
+                    <td><Link className='link' to={`/students/${student.studentName}`} >@{student.studentName}</Link></td>
                     <td>{student.studentId}</td>
                     <td> <Button
                         onClick={()=>{
-                            navigate(`./students/${student.studentName}`)
+                            navigate(`/students/${student.studentName}`)
                         }}
                     >
                         View
@@ -158,17 +158,18 @@ const StudentProfile = () =>{
     return <div className='App'>
         {
             !student? <h1>loading...</h1> : <div >
-                <h1 style={{ textTransform:"uppercase" }} >{student.name}</h1>
+                <h1>STUDENT PROFILE</h1>
                 <div className='profile' >
                     <Icons.Person sx={{fontSize:"180px"}} />
                 </div>
                 <br/>
+                <h1 style={{ textTransform:"uppercase" }} >{student.name}</h1>
                 <div>
                     <p>@{student.studentName}</p>
                     <p>Mentor :
                     { !student.mentorDetails ? <p>No body</p>:
                     <span> {' '}
-                       @<Link className='link' to={`mentors/${student.mentorDetails.mentorName}`}>{student.mentorDetails.mentorName}</Link>
+                       @<Link className='link' to={`/mentors/${student.mentorDetails.mentorName}`}>{student.mentorDetails.mentorName}</Link>
                     </span>
                     }</p>
                 </div>
@@ -178,7 +179,97 @@ const StudentProfile = () =>{
 }
 
 
+// list all students
+
+const ListAllStudents = () =>{
+    const navigate = useNavigate()
+    const [freeStudents, setFreeStudents] = useState(null)
+
+    const getData = () =>{
+        fetch(`https://mentoralo.herokuapp.com/students`)
+        .then(res => res.json() )
+        .then(({data}) => {
+            setFreeStudents(data)
+            
+        })
+    }
+
+    useEffect(()=>{
+      getData();
+   },[])
+
+    const reAssign = async () =>{
+        setFreeStudents(null)
+       await fetch(`https://mentoralo.herokuapp.com/reassign`,{
+            method: 'PUT'
+        })
+        
+        getData();
+    }
+    const autoAssign = async () =>{
+        setFreeStudents(null)
+       await fetch(`https://mentoralo.herokuapp.com/assign`,{
+            method: 'PUT'
+        })
+        
+        getData();
+    }
+   
+
+    return <div className='App' >
+         <div style={{display: "inline"}}>
+             <h2>STUDENTS LIST </h2>   
+             <div style={{
+                 width:"100%"
+             }} ><img alt="students" title="students" src="img/createStudent.png" height="400" /> </div>            
+                <Button
+                    onClick={reAssign}
+                >
+                ReAssign
+                </Button>
+                <Button
+                    onClick={autoAssign}
+                >
+                Auto Assign
+                </Button>
+            
+         </div>
+        {
+            !freeStudents? <h2>Loading...</h2> : freeStudents.length === 0? <p style={{color: 'gray'}}>All students are assigned</p> :  <table>
+            <thead>
+                <tr>
+                    <th>SI. No.</th>
+                    <th>Name</th>
+                    <th>StudentName</th>
+                    <th>Id</th>
+                    <th>Mentor</th>
+                    <th>Profile</th>
+                </tr>
+            </thead>
+            <tbody>
+                {freeStudents.map((student, si) =>(<tr key={si} >
+                    <td>{si+1}</td>
+                    <td>{student.name}</td>
+                    <td><Link className='link' to={`../students/${student.studentName}`} >@{student.studentName}</Link></td>
+                    <td>{student.studentId}</td>
+                    <td>{!student.mentorDetails ? <i style={{color:"#101010"}} >unassigned</i> : <Link className='link' to={`../mentors/${student.mentorDetails.mentorName}`} >{student.mentorDetails.mentorName}</Link>}</td>
+                    <td> <Button
+                        onClick={()=>{
+                            navigate(`../students/${student.studentName}`)
+                        }}
+                    >
+                        View
+                        </Button> </td>
+                </tr>))}
+            </tbody>
+        </table>
+        }
+    </div>
+}
+
+
+
 
 export {
-    StudentSlide, UnassignedStudents, StudentProfile
+    StudentSlide, UnassignedStudents, StudentProfile, ListAllStudents
 }
