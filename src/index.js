@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import RouteConfig from './routeConfig';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <RouteConfig />
   </React.StrictMode>,
   document.getElementById('root')
 );
