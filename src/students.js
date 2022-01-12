@@ -216,7 +216,9 @@ const ListAllStudents = () =>{
     }
    
 
-    return <div className='App' >
+    return <div className='App' style={{
+        paddingBottom: "200px"
+    }} >
          <div style={{display: "inline"}}>
              <h2>STUDENTS LIST </h2>   
              <div style={{
