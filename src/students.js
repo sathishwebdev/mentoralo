@@ -1,6 +1,5 @@
 import React,{useState, useEffect} from 'react'
 import * as Icons from '@mui/icons-material'
-import { lineHeight } from '@mui/system'
 import * as mui from '@mui/material'
 import { Link, useNavigate, useParams } from 'react-router-dom';
   // style 
@@ -17,19 +16,19 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
       boxShadow: "0px 0px 15px 1px"
     },
   }));
-  const TextField = mui.styled(mui.TextField)({
-    '& label.Mui-focused': {
-      color: "black"
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'black',
-    },
-    '& .MuiOutlinedInput-root': {
-      '&.Mui-focused fieldset': {
-        borderColor: 'black',
-      },
-    },
-  });
+//   const TextField = mui.styled(mui.TextField)({
+//     '& label.Mui-focused': {
+//       color: "black"
+//     },
+//     '& .MuiInput-underline:after': {
+//       borderBottomColor: 'black',
+//     },
+//     '& .MuiOutlinedInput-root': {
+//       '&.Mui-focused fieldset': {
+//         borderColor: 'black',
+//       },
+//     },
+//   });
 
 
 function StudentSlide() {
@@ -124,11 +123,11 @@ const UnassignedStudents = () =>{
                 {freeStudents.map((student, si) =>(<tr key={si} >
                     <td>{si+1}</td>
                     <td>{student.name}</td>
-                    <td><Link className='link' to={`students/${student.studentName}`} >@{student.studentName}</Link></td>
+                    <td><Link className='link' to={`../students/${student.studentName}`} >@{student.studentName}</Link></td>
                     <td>{student.studentId}</td>
                     <td> <Button
                         onClick={()=>{
-                            navigate(`students/${student.studentName}`)
+                            navigate(`./students/${student.studentName}`)
                         }}
                     >
                         View
@@ -143,7 +142,7 @@ const UnassignedStudents = () =>{
 
 const StudentProfile = () =>{
 
-    const navigate = useNavigate()
+
     const {studentName} = useParams()
     const [student , setStudent] = useState(null)
     
