@@ -16,19 +16,27 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
       boxShadow: "0px 0px 15px 1px"
     },
   }));
-//   const TextField = mui.styled(mui.TextField)({
-//     '& label.Mui-focused': {
-//       color: "black"
-//     },
-//     '& .MuiInput-underline:after': {
-//       borderBottomColor: 'black',
-//     },
-//     '& .MuiOutlinedInput-root': {
-//       '&.Mui-focused fieldset': {
-//         borderColor: 'black',
-//       },
-//     },
-//   });
+  const TextField = mui.styled(mui.TextField)({
+   
+        input:{
+            color:'whitesmoke',
+            fontFamily: 'pease-san'
+        }
+    ,
+    '& label.Mui-focused': {
+      color: "white"
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'black',
+      color: "white"
+    },
+    '& .MuiOutlinedInput-root': {
+      '&.Mui-focused fieldset': {
+        borderColor: 'black',
+        color: "white"
+      },
+    },
+  });
 
 
 function StudentSlide() {
@@ -189,7 +197,7 @@ const ListAllStudents = () =>{
         fetch(`https://mentoralo.herokuapp.com/students`)
         .then(res => res.json() )
         .then(({data}) => {
-            setFreeStudents(data)
+            setFreeStudents(data.reverse())
             
         })
     }
@@ -214,7 +222,7 @@ const ListAllStudents = () =>{
         
         getData();
     }
-   
+
 
     return <div className='App' style={{
         paddingBottom: "200px"
@@ -222,49 +230,88 @@ const ListAllStudents = () =>{
          <div style={{display: "inline"}}>
              <h2>STUDENTS LIST </h2>   
              <div style={{
-                 width:"100%"
-             }} ><img alt="students" title="students" src="img/createStudent.png" height="400" /> </div>            
+                 width:"100%",
+                 display:'flex',
+                 margin:"1%",
+                flexWrap:"wrap",
+                justifyContent:"center",
+                alignItems:"center"
+             }} >
+                 <img alt="students" title="students" src="img/createStudent.png" height="400" />
+                 <div>
+                     
+                                <h2>Create Student </h2>
+                     
+                                <TextField
+                                color='primary'
+                                sx={{width:"90%"}}
+                                placeholder="Name"
+                                margin="normal"
+                                />
+                     
+                                <TextField
+                                sx={{width:"90%"}}
+                                placeholder="StudentName"
+                                margin="normal"
+                                />
+                     
+                                <TextField
+                                sx={{width:"90%"}}
+                                placeholder="Mentor Detail"
+                                margin="normal"
+                                />
+                     
+                                <Button
+                                sx={{width:"40%"}}
+                                type="submit"><Icons.Add />Add</Button>
+                 </div>
+                       
+              </div>            
                 <Button
                     onClick={reAssign}
+                    title="re-assign all"
                 >
                 ReAssign
                 </Button>
                 <Button
                     onClick={autoAssign}
+                    title="only unassigned students"
                 >
                 Auto Assign
                 </Button>
             
          </div>
         {
-            !freeStudents? <h2>Loading...</h2> : freeStudents.length === 0? <p style={{color: 'gray'}}>All students are assigned</p> :  <table>
-            <thead>
-                <tr>
-                    <th>SI. No.</th>
-                    <th>Name</th>
-                    <th>StudentName</th>
-                    <th>Id</th>
-                    <th>Mentor</th>
-                    <th>Profile</th>
-                </tr>
-            </thead>
-            <tbody>
-                {freeStudents.map((student, si) =>(<tr key={si} >
-                    <td>{si+1}</td>
-                    <td>{student.name}</td>
-                    <td><Link className='link' to={`../students/${student.studentName}`} >@{student.studentName}</Link></td>
-                    <td>{student.studentId}</td>
-                    <td>{!student.mentorDetails ? <i style={{color:"#101010"}} >unassigned</i> : <Link className='link' to={`../mentors/${student.mentorDetails.mentorName}`} >{student.mentorDetails.mentorName}</Link>}</td>
-                    <td> <Button
-                        onClick={()=>{
-                            navigate(`../students/${student.studentName}`)
-                        }}
-                    >
-                        View
-                        </Button> </td>
-                </tr>))}
-            </tbody>
-        </table>
+            !freeStudents? <h2>Loading...</h2> : freeStudents.length === 0? <p style={{color: 'gray'}}>All students are assigned</p> :  <div className='table'>
+                <table>
+                <thead>
+                    <tr>
+                        <th>SI. No.</th>
+                        <th>Name</th>
+                        <th>StudentName</th>
+                        <th>Id</th>
+                        <th>Mentor</th>
+                        <th>Profile</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {freeStudents.map((student, si) =>(<tr key={si} >
+                        <td>{si+1}</td>
+                        <td>{student.name}</td>
+                        <td><Link className='link' to={`../students/${student.studentName}`} >@{student.studentName}</Link></td>
+                        <td>{student.studentId}</td>
+                        <td>{!student.mentorDetails ? <i style={{color:"#101010"}} >unassigned</i> : <Link className='link' to={`../mentors/${student.mentorDetails.mentorName}`} >{student.mentorDetails.mentorName}</Link>}</td>
+                        <td> <Button
+                            onClick={()=>{
+                                navigate(`../students/${student.studentName}`)
+                            }}
+                        >
+                            View
+                            </Button> </td>
+                    </tr>))}
+                </tbody>
+                        </table>
+            </div>
         }
     </div>
 }
@@ -273,5 +320,8 @@ const ListAllStudents = () =>{
 
 
 export {
-    StudentSlide, UnassignedStudents, StudentProfile, ListAllStudents
+    StudentSlide,
+    UnassignedStudents,
+    StudentProfile,
+    ListAllStudents
 }
